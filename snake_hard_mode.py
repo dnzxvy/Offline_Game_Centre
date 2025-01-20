@@ -105,6 +105,17 @@ def next_turn(snake, food, poison_food):
         label.config(text="Score:{}".format(score))
         canvas.delete("poison_food")
         poison_food = PoisonFood()
+
+        # Delete all snake squares
+        for square in snake.squares:
+            canvas.delete(square)
+        snake.squares.clear()
+        snake.coordinates.clear()
+
+        # End the game
+        game_over()
+
+
     else:
         del snake.coordinates[-1]
         canvas.delete(snake.squares[-1])
