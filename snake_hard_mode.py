@@ -30,12 +30,26 @@ class Food:
         # Create the visual representation of the food
         canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOUR, tag="food")
 
+
+# Define the Poison food class to manage its appearance and placement
+
+class PoisonFood:
+    def __init__(self):
+        x = random.randint(0, int(GAME_WIDTH / SPACE_SIZE) - 1) * SPACE_SIZE
+        y = random.randint(0, int(GAME_WIDTH / SPACE_SIZE) - 1) * SPACE_SIZE
+
+        self.coordinates = [x, y]
+
+        canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=POISON_FOOD_COLOUR, tag="poison_food")
+        # Randomly generate coordinates for the poisoned food within the game boundaries
+
 # Start a new game, initializing snake and food
 def start_game():
-    global snake, food
+    global snake, food, poison_food
     snake = Snake()
     food = Food()
-    next_turn(snake, food)  # Start the game loop
+    poison_food = PoisonFood()
+    next_turn(snake, food, poison_food)  # Start the game loop
     start_button.destroy()  # Remove the start button after the game starts
     restart_button.place_forget()
     game_over_label.place_forget()
@@ -57,12 +71,12 @@ SPACE_SIZE = 30
 BODY_PARTS = 3
 SNAKE_COLOUR = "#00FF00"
 FOOD_COLOUR = "#FF0000"
+POISON_FOOD_COLOUR = "#A020F0"
 BACKGROUND_COLOUR = "#000000"
 
 # Main game loop
-def next_turn(snake, food):
-
-    x, y = snake.coordinates[0]  # Get the current position of the snake's head
+def next_turn(snake, food, poison_food):
+    x, y = snake.coordinates[0]
 
     # Update the snake's direction
     if direction == "up":
@@ -74,32 +88,33 @@ def next_turn(snake, food):
     elif direction == "right":
         x += SPACE_SIZE
 
-    # Add the new head position to the snake's coordinates
+    # Add the new head position
     snake.coordinates.insert(0, (x, y))
-
-    # Create a new rectangle for the updated head position
     square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOUR)
     snake.squares.insert(0, square)
 
     # Check if the snake eats the food
     if x == food.coordinates[0] and y == food.coordinates[1]:
         global score
-        score += 1  # Increase the score
-        label.config(text="Score:{}".format(score))  # Update score display
-        canvas.delete("food")  # Remove the current food
-        food = Food()  # Generate new food
+        score += 1
+        label.config(text="Score:{}".format(score))
+        canvas.delete("food")
+        food = Food()
+    elif x == poison_food.coordinates[0] and y == poison_food.coordinates[1]:
+        score -= 2
+        label.config(text="Score:{}".format(score))
+        canvas.delete("poison_food")
+        poison_food = PoisonFood()
     else:
-        # Remove the last part of the snake's body to simulate movement
         del snake.coordinates[-1]
         canvas.delete(snake.squares[-1])
         del snake.squares[-1]
 
     # Check for collisions
     if check_collisions(snake):
-        game_over()  # End the game if a collision occurs
+        game_over()
     else:
-        # Schedule the next frame
-        window.after(SPEED, next_turn, snake, food)
+        window.after(SPEED, next_turn, snake, food, poison_food)
 
 # Change the snake's direction based on user input
 def change_direction(new_direction):
@@ -121,7 +136,6 @@ def check_collisions(snake):
     # Check if the snake hits the wall
     if x < 0 or x >= GAME_WIDTH or y < 0 or y >= GAME_HEIGHT:
         return True
-
     # Check if the snake collides with itself
     for body_part in snake.coordinates[1:]:
         if x == body_part[0] and y == body_part[1]:
