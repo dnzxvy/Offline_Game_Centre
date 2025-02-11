@@ -53,6 +53,12 @@ class TicTacToeGUI:
 
         return False
 
+    def reset_game(self):
+        self.board = [' ' for _ in range(9)]
+        for button in self.buttons:
+            button.config(text='')
+        self.current_turn = 'X'
+
 
 
 
