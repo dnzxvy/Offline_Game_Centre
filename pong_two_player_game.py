@@ -23,6 +23,16 @@ class Ball:
         self.x = random.choice([-2.5,-2.5])
         self.y = -2.5
 
+        #Check for score crossing 8 which is the score you need to win
+        def check_winner(self):
+            winner = None
+            if self.p1S == 8:
+                winner = "Player Left"
+            if self.p2S == 8:
+                winner = "Player Right"
+
+            return winner
+
 
 
 
