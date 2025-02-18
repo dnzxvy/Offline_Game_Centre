@@ -23,15 +23,28 @@ class Ball:
         self.x = random.choice([-2.5,-2.5])
         self.y = -2.5
 
-        #Check for score crossing 8 which is the score you need to win
-        def check_winner(self):
-            winner = None
-            if self.p1S == 8:
-                winner = "Player Left"
-            if self.p2S == 8:
-                winner = "Player Right"
+    #Check for score crossing 8 which is the score you need to win
+    def check_winner(self):
+        winner = None
+        if self.p1S == 8:
+            winner = "Player Left"
+        if self.p2S == 8:
+            winner = "Player Right"
 
-            return winner
+        return winner
+
+    # Update the left paddle score
+    def updateP1(self, val):
+        self.canvas.delete(self.drawP1)
+        self.drawP1 = self.canvas.create_text(170, 50,
+        font=('', 40), text=str(val), fill='white')
+
+
+    #Update the right paddle score
+    def updateP2(self, val):
+        self.canvas.delete(self.drawP2)
+        self.drawP2 = self.canvas.create_text(530, 50,
+        font=('', 40), text=str(val), fill='red')
 
 
 
@@ -194,3 +207,5 @@ tk.update()
 
 #creating the middle line to reprsent which half belongs to its player
 canvas.create_line(350,0,350,500,fill='white')
+
+tk.mainloop()
