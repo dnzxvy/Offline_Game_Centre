@@ -46,6 +46,57 @@ class Ball:
         self.drawP2 = self.canvas.create_text(530, 50,
         font=('', 40), text=str(val), fill='red')
 
+    #Check for collisions of ball & paddle for paddle left (P1)
+
+    def hit_paddle1(self,pos):
+        paddle_pos = self.canvas.coords(self.paddle1.id)
+
+        if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
+            if pos[3] >= paddle_pos[1] and pos[3] <= paddle_pos[3]:
+                return True
+
+            return False
+
+
+    #Check for collisions of ball & paddle for the right paddle (P2)
+
+    def hit_paddle2(self,pos):
+        paddle_pos = self.canvas.coords(self.paddle2.id)
+
+        if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
+            if pos[3] >= paddle_pos[1] and pos[3] <= paddle_pos[3]:
+                return True
+
+            return False
+
+    #Drawing the ball plus check for all collisions
+
+    def draw(self):
+        self.canvas.move(self.id, self.x, self.y)
+        pos = self.canvas.coords(self.id)
+        if pos[1] <= 0:
+            self.y = 4
+        if pos[3] >= self.canvas_height:
+            self.y = -4
+        if pos[0] <= 0:
+            self.p2S += 1  # Update paddle 2 score
+            winsound.PlaySound('Beep2.wav', winsound.SND_FILENAME)
+            self.canvas.move(self.id, 327, 220)
+            self.x = 4
+            self.updateP2(self.p2S)
+        if pos[2] >= self.canvas_width:
+            self.p1S += 1  # Update paddle 1 score
+            winsound.PlaySound('Beep2.wav', winsound.SND_FILENAME)
+            self.canvas.move(self.id, -327, -220)
+            self.x = -4
+            self.updateP1(self.p1S)
+        if self.hit_paddle1(pos):
+            winsound.PlaySound('Beep2.wav', winsound.SND_FILENAME)
+            self.x = -4
+        if self.hit_paddle2(pos):
+            winsound.PlaySound('Beep2.wav', winsound.SND_FILENAME)
+            self.x = 4
+
 
 
 
