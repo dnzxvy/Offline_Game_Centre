@@ -99,147 +99,61 @@ class Ball:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#initialising the window
+# Left paddle class (p1)
+class Paddle1:
+    def __init__(self,canvas,color):
+        self.canvas = canvas
+        self.id = self.canvas.create_rectangle(0,200,20,310,fill=color)
+        self.y = 0
+        self.canvas_height=self.canvas.winfo_height()
+        self.canvas_width=self.canvas.winfo_width()
+
+        self.canvas.bind_all('<KeyPress-w>',self.left)
+        self.canvas.bind_all('<KeyPress-s>',self.right) #binding to keys
+
+    #moving the paddle
+    def left(self,e):
+        self.y = -5
+
+    def right(self,e):
+        self.y = 5
+    #drawing the left paddle
+    def draw(self):
+        self.canvas.move(self.id,0,self.y)
+        pos = self.canvas.coords(self.id)
+        if pos[1] <= 0:
+            self.y = 0
+        if pos[3] >= 500:
+            self.y = -0
+
+
+#right paddle (p2)
+class Paddle2:
+    def __init__(self,canvas,color):
+        self.canvas = canvas
+        self.id = self.canvas.create_rectangle(680,200,710,310,fill=color)
+        self.y = 0
+        self.canvas_height=self.canvas.winfo_height()
+        self.canvas_width=self.canvas.winfo_width()
+        self.canvas.bind_all('<KeyPress-Up>',self.left)
+        self.canvas.bind_all('<KeyPress-Down>',self.right)
+
+    def left(self,e):
+        self.y = -5
+
+    def right(self,e):
+        self.y = 5
+
+    #drawing the right paddle
+    def draw(self):
+        self.canvas.move(self.id,0,self.y)
+        pos = self.canvas.coords(self.id)
+        if pos[1] <= 0:
+            self.y = 0
+        if pos[3] >= 500:
+            self.y = 0
+
+#Initialising the window
 
 tk = Tk()
 tk.title("Pong Game!!!")
@@ -258,5 +172,23 @@ tk.update()
 
 #creating the middle line to reprsent which half belongs to its player
 canvas.create_line(350,0,350,500,fill='white')
+
+#The obJects
+
+paddle1 = Paddle1(canvas,'purple')
+paddle2 = Paddle2(canvas,'purple')
+ball = Ball(canvas,paddle2,paddle1,'white')
+
+while 1:
+    ball.draw()
+    paddle1.draw()
+    paddle2.draw()
+    if ball.check_winner():
+        messagebox.showinfo("Game Has Ended",ball.check_winner()+"Won!!")
+
+        break
+    tk.update_idletasks()
+    tk.update()
+    time.sleep(0.01)
 
 tk.mainloop()
