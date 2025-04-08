@@ -46,6 +46,7 @@ class PoisonFood:
 # Start a new game, initializing snake and food
 def start_game():
     global snake, food, poison_food
+    draw_star_background()
     snake = Snake()
     food = Food()
     poison_food = PoisonFood()
@@ -57,11 +58,24 @@ def start_game():
 # Restart the game after a game over
 def restart_game():
     global score
+    #draw_star_background()
+    canvas.delete(ALL)
     score = 0  # Reset the score
     label.config(text="Score:{}".format(score))  # Update score display
     game_over_label.place_forget()  # Hide "Game Over" message
     restart_button.place_forget()  # Hide restart button
     start_game()  # Start a new game
+
+def draw_star_background():
+    canvas.delete("bg")  # Remove previous background layer
+    canvas.create_rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, fill=BACKGROUND_COLOUR, outline="", tag="bg")
+
+    for _ in range(100):  # Draw 100 stars
+        x = random.randint(0, GAME_WIDTH)
+        y = random.randint(0, GAME_HEIGHT)
+        size = random.randint(1, 2)
+        canvas.create_oval(x, y, x + size, y + size, fill="white", outline="", tag="bg")
+
 
 # Constants for game settings
 GAME_WIDTH =500
@@ -72,7 +86,7 @@ BODY_PARTS = 3
 SNAKE_COLOUR = "#00FF00"
 FOOD_COLOUR = "#FF0000"
 POISON_FOOD_COLOUR = "#A020F0"
-BACKGROUND_COLOUR = "#000000"
+BACKGROUND_COLOUR = "#2E003E"
 
 # Main game loop
 def next_turn(snake, food, poison_food):
@@ -100,21 +114,16 @@ def next_turn(snake, food, poison_food):
         label.config(text="Score:{}".format(score))
         canvas.delete("food")
         food = Food()
+
     elif x == poison_food.coordinates[0] and y == poison_food.coordinates[1]:
         score -= 2
         label.config(text="Score:{}".format(score))
         canvas.delete("poison_food")
         poison_food = PoisonFood()
 
-        # Delete all snake squares
-        for square in snake.squares:
-            canvas.delete(square)
-        snake.squares.clear()
-        snake.coordinates.clear()
-
-        # End the game
+        # Just call game over — let restart logic reset everything
         game_over()
-
+        return  # Stop the function to prevent further execution
 
     else:
         del snake.coordinates[-1]
@@ -176,6 +185,7 @@ label.pack()
 # Create and configure the game canvas
 canvas = Canvas(window, bg=BACKGROUND_COLOUR, height=GAME_HEIGHT, width=GAME_WIDTH)
 canvas.pack(fill=BOTH, expand=True)
+draw_star_background()
 
 # Add the start button
 start_button = Button(window, text="Start Game", font=('consolas', 20), command=start_game, bd=0)

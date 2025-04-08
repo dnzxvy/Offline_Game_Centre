@@ -17,6 +17,29 @@ class Snake:
         for x, y in self.coordinates:
             square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOUR, tag="snake")
             self.squares.append(square)
+def draw_tongue(x, y, direction):
+    tongue_length = 10
+    tongue_width = 2
+    tongue_color = "red"
+
+    # Determine the tongue's end point based on direction
+    if direction == "up":
+        x1, y1 = x + SPACE_SIZE // 2, y
+        x2, y2 = x + SPACE_SIZE // 2, y - tongue_length
+    elif direction == "down":
+        x1, y1 = x + SPACE_SIZE // 2, y + SPACE_SIZE
+        x2, y2 = x + SPACE_SIZE // 2, y + SPACE_SIZE + tongue_length
+    elif direction == "left":
+        x1, y1 = x, y + SPACE_SIZE // 2
+        x2, y2 = x - tongue_length, y + SPACE_SIZE // 2
+    elif direction == "right":
+        x1, y1 = x + SPACE_SIZE, y + SPACE_SIZE // 2
+        x2, y2 = x + SPACE_SIZE + tongue_length, y + SPACE_SIZE // 2
+    else:
+        return  # Safety check
+
+    canvas.create_line(x1, y1, x2, y2, fill=tongue_color, width=tongue_width, tag="tongue")
+
 
 # Define the Food class to manage food placement and appearance
 class Food:
@@ -33,6 +56,7 @@ class Food:
 # Start a new game, initializing snake and food
 def start_game():
     global snake, food
+    draw_star_background()
     snake = Snake()
     food = Food()
     next_turn(snake, food)  # Start the game loop
@@ -43,11 +67,26 @@ def start_game():
 # Restart the game after a game over
 def restart_game():
     global score
+    #draw_star_background()
+    canvas.delete(ALL)
     score = 0  # Reset the score
     label.config(text="Score:{}".format(score))  # Update score display
     game_over_label.place_forget()  # Hide "Game Over" message
     restart_button.place_forget()  # Hide restart button
     start_game()  # Start a new game
+
+
+
+def draw_star_background():
+    canvas.delete("bg")  # Remove previous background layer
+    canvas.create_rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, fill=BACKGROUND_COLOUR, outline="", tag="bg")
+
+    for _ in range(100):  # Draw 100 stars
+        x = random.randint(0, GAME_WIDTH)
+        y = random.randint(0, GAME_HEIGHT)
+        size = random.randint(1, 2)
+        canvas.create_oval(x, y, x + size, y + size, fill="white", outline="", tag="bg")
+
 
 # Constants for game settings
 GAME_WIDTH = 500
@@ -57,7 +96,7 @@ SPACE_SIZE = 30
 BODY_PARTS = 3
 SNAKE_COLOUR = "#00FF00"
 FOOD_COLOUR = "#FF0000"
-BACKGROUND_COLOUR = "#000000"
+BACKGROUND_COLOUR = "#1a0033"
 
 # Main game loop
 def next_turn(snake, food):
@@ -79,6 +118,8 @@ def next_turn(snake, food):
     # Create a new rectangle for the updated head position
     square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOUR)
     snake.squares.insert(0, square)
+    canvas.delete("tongue")  # Remove old tongue before drawing new one
+    draw_tongue(x, y, direction)
 
     # Check if the snake eats the food
     if x == food.coordinates[0] and y == food.coordinates[1]:
@@ -150,6 +191,9 @@ label.pack()
 # Create and configure the game canvas
 canvas = Canvas(window, bg=BACKGROUND_COLOUR, height=GAME_HEIGHT, width=GAME_WIDTH)
 canvas.pack(fill=BOTH, expand=True)
+
+draw_star_background()
+
 
 # Add the start button
 start_button = Button(window, text="Start Game", font=('consolas', 20), command=start_game, bd=0)
