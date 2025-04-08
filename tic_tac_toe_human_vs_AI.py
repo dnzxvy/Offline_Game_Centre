@@ -1,12 +1,12 @@
 import tkinter as tk
+import random
 import time
 
 
 class TicTacToeApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Tic Tac Toe ")
-
+        self.root.title("Tic Tac Toe Arcade")
 
         self.start_frame = tk.Frame(root, bg="black")
         self.start_frame.pack(fill="both", expand=True)
@@ -20,22 +20,20 @@ class TicTacToeApp:
         self.start_button.pack(pady=20)
 
     def start_game(self):
-        self.start_frame.destroy()  # Remove start screen
-        TicTacToeGUI(self.root)  # Launch game
+        self.start_frame.destroy()
+        TicTacToeGUI(self.root)
 
 
 class TicTacToeGUI:
     def __init__(self, master):
         self.master = master
-        self.master.title("Tic Tac Toe")
-
         self.board = [' ' for _ in range(9)]
         self.current_turn = 'X'
 
         self.buttons = []
         for i in range(9):
             row, col = divmod(i, 3)
-            button = tk.Button(master, text='', font=('Helvetica', 20), width=5, height=2,
+            button = tk.Button(master, text='', font=('normal', 20), width=5, height=2,
                                command=lambda i=i: self.make_move(i))
             button.grid(row=row, column=col)
             self.buttons.append(button)
@@ -43,44 +41,40 @@ class TicTacToeGUI:
     def make_move(self, square):
         if self.board[square] == ' ':
             self.board[square] = self.current_turn
-            colour = 'Purple' if self.current_turn == 'X' else 'red'
+            color = 'blue' if self.current_turn == 'X' else 'red'
             bg_color = 'lightblue' if self.current_turn == 'X' else 'lightcoral'
-            self.buttons[square].config(text=self.current_turn, fg=colour, bg=bg_color)
+            self.buttons[square].config(text=self.current_turn, fg=color, bg=bg_color)
 
-            # Check for a winner
             if self.check_winner(square):
+                self.show_win_message()
                 return
-
-            # Check for a tie AFTER checking for a winner
-            if ' ' not in self.board:
+            elif ' ' not in self.board:
                 self.show_tie()
                 return
 
-            # Switch turns
             self.current_turn = 'O' if self.current_turn == 'X' else 'X'
+            if self.current_turn == 'O':
+                self.master.after(500, self.computer_move)  # slight delay for realism
+
+    def computer_move(self):
+        available_moves = [i for i, spot in enumerate(self.board) if spot == ' ']
+        if available_moves:
+            square = random.choice(available_moves)
+            self.make_move(square)
 
     def check_winner(self, square):
-        row_ind = square // 3
-        row = self.board[row_ind * 3: (row_ind + 1) * 3]
-        if all([spot == self.current_turn for spot in row]):
-            self.show_win_message()
+        row = square // 3
+        if self.board[row * 3] == self.board[row * 3 + 1] == self.board[row * 3 + 2] != ' ':
             return True
 
-        col_ind = square % 3
-        column = [self.board[col_ind + i * 3] for i in range(3)]
-        if all([spot == self.current_turn for spot in column]):
-            self.show_win_message()
+        col = square % 3
+        if self.board[col] == self.board[col + 3] == self.board[col + 6] != ' ':
             return True
 
-        if square % 2 == 0:
-            diagonal1 = [self.board[i] for i in [0, 4, 8]]
-            if all([spot == self.current_turn for spot in diagonal1]):
-                self.show_win_message()
-                return True
-            diagonal2 = [self.board[i] for i in [2, 4, 6]]
-            if all([spot == self.current_turn for spot in diagonal2]):
-                self.show_win_message()
-                return True
+        if self.board[0] == self.board[4] == self.board[8] != ' ':
+            return True
+        if self.board[2] == self.board[4] == self.board[6] != ' ':
+            return True
 
         return False
 
@@ -94,7 +88,6 @@ class TicTacToeGUI:
                          bg="black")
         label.pack(expand=True)
 
-        # Flashing Effect
         for _ in range(5):
             popup.update()
             label.config(fg="red")
@@ -115,7 +108,6 @@ class TicTacToeGUI:
         label = tk.Label(popup, text="It's a Tie!", font=("Courier", 24, "bold"), fg="cyan", bg="black")
         label.pack(expand=True)
 
-        # Flashing Effect for Tie
         for _ in range(5):
             popup.update()
             label.config(fg="magenta")
@@ -130,11 +122,11 @@ class TicTacToeGUI:
     def reset_game(self):
         self.board = [' ' for _ in range(9)]
         for button in self.buttons:
-            button.config(text='', fg='black', bg='SystemButtonFace')  # Reset text, color, and background
+            button.config(text='', fg='black', bg='SystemButtonFace')
         self.current_turn = 'X'
 
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = TicTacToeApp(root)  # Start with the arcade start screen
+    app = TicTacToeApp(root)
     root.mainloop()
