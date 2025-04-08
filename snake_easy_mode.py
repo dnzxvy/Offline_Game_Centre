@@ -1,4 +1,5 @@
 from tkinter import *
+from snake_score_database import save_score, get_user_high_score
 from tkinter import messagebox
 import random
 
@@ -56,6 +57,8 @@ class Food:
 # Start a new game, initializing snake and food
 def start_game():
     global snake, food
+    score = 0
+    label.config(text=f"Score: {score} | Best: {get_user_high_score(username, 'Snake')}")
     draw_star_background()
     snake = Snake()
     food = Food()
@@ -172,11 +175,19 @@ def check_collisions(snake):
 # Display the "Game Over" screen
 def game_over():
     canvas.delete(ALL)  # Clear the canvas
+    save_score(username, "Snake", score)
     game_over_label.place(relx=0.5, rely=0.4, anchor=CENTER)  # Display "Game Over" message
     restart_button.place(relx=0.5, rely=0.6, anchor=CENTER)  # Show restart button
 
 # Initialize the main Tkinter window
 window = Tk()
+from tkinter import simpledialog
+
+# after window = Tk()
+username = simpledialog.askstring("Username", "Enter your username:")
+if not username:
+    username = "Guest"
+
 window.title("Snake Game")
 window.resizable(False, False)
 
@@ -185,7 +196,7 @@ score = 0
 direction = 'down'
 
 # Create and configure the score label
-label = Label(window, text="Score:{}".format(score), font=('consolas', 46))
+label = Label(window, text="Score:{}".format(score), font=('consolas', 30))
 label.pack()
 
 # Create and configure the game canvas

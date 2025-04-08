@@ -1,4 +1,5 @@
 from tkinter import *
+from snake_score_database import save_score, get_user_high_score
 from tkinter import messagebox
 import random
 
@@ -45,7 +46,10 @@ class PoisonFood:
 
 # Start a new game, initializing snake and food
 def start_game():
-    global snake, food, poison_food
+    global snake, food, poison_food, game_running
+    score = 0
+    game_running = True
+    label.config(text=f"Score: {score} | Best: {get_user_high_score(username, 'Snake')}")
     draw_star_background()
     snake = Snake()
     food = Food()
@@ -61,7 +65,8 @@ def restart_game():
     #draw_star_background()
     canvas.delete(ALL)
     score = 0  # Reset the score
-    label.config(text="Score:{}".format(score))  # Update score display
+    label.config(text=f"Score: {score} | Best: {get_user_high_score(username, 'Snake Hard')}")
+  # Update score display
     game_over_label.place_forget()  # Hide "Game Over" message
     restart_button.place_forget()  # Hide restart button
     start_game()  # Start a new game
@@ -90,6 +95,8 @@ BACKGROUND_COLOUR = "#2E003E"
 
 # Main game loop
 def next_turn(snake, food, poison_food):
+    if not game_running:
+        return
     x, y = snake.coordinates[0]
 
     # Update the snake's direction
@@ -165,13 +172,24 @@ def check_collisions(snake):
 
 # Display the "Game Over" screen
 def game_over():
+    global game_running
+    game_running = False
     canvas.delete(ALL)  # Clear the canvas
+    save_score(username, "Snake Hard", score)
     game_over_label.place(relx=0.5, rely=0.4, anchor=CENTER)  # Display "Game Over" message
     restart_button.place(relx=0.5, rely=0.6, anchor=CENTER)  # Show restart button
 
+
 # Initialize the main Tkinter window
 window = Tk()
-window.title("Snake Game")
+from tkinter import simpledialog
+
+# after window = Tk()
+username = simpledialog.askstring("Username", "Enter your username:")
+if not username:
+    username = "Guest"
+
+window.title("Snake Hard Game")
 window.resizable(False, False)
 
 # Initialize game variables
@@ -179,7 +197,7 @@ score = 0
 direction = 'down'
 
 # Create and configure the score label
-label = Label(window, text="Score:{}".format(score), font=('consolas', 46))
+label = Label(window, text="Score:{}".format(score), font=('consolas', 30))
 label.pack()
 
 # Create and configure the game canvas

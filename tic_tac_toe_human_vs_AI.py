@@ -101,7 +101,7 @@ class TicTacToeGUI:
 
     def show_tie(self):
         popup = tk.Toplevel(self.master)
-        popup.title("🤝 It's a Tie! 🤝")
+        popup.title(" It's a Tie! ")
         popup.geometry("300x200")
         popup.configure(bg="black")
 
