@@ -6,7 +6,7 @@ import time
 class TicTacToeApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Tic Tac Toe Arcade")
+        self.root.title("Tic Tac Toe")
 
         self.start_frame = tk.Frame(root, bg="black")
         self.start_frame.pack(fill="both", expand=True)
@@ -42,7 +42,7 @@ class TicTacToeGUI:
         if self.board[square] == ' ':
             self.board[square] = self.current_turn
             color = 'blue' if self.current_turn == 'X' else 'red'
-            bg_color = 'lightblue' if self.current_turn == 'X' else 'lightcoral'
+            bg_color = 'magenta2' if self.current_turn == 'X' else 'SpringGreen2'
             self.buttons[square].config(text=self.current_turn, fg=color, bg=bg_color)
 
             if self.check_winner(square):

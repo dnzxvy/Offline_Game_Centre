@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic-Tac-Toe Game Modes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img">
+            <span class="logo-text">Game Centre</span>
+        </div>
+        <ul>
+            <li><a href="/">Home</a></li>
+			<li class="dropdown">
+			    <a href="#">Games ▾</a>
+				<ul class="dropdown-content">
+				    <li><a href="/start_snake">Snake Game</a></li>
+					<li><a href="/start_snake_hard">Snake (Hard Mode)</a></li>
+					<li><a href="/start_tic_tac_toe">Tic-Tac-Toe</a></li>
+					<li><a href="/start_tic_tac_toe_ai">Tic-Tac-Toe vs AI</a></li>
+					<li><a href="/start_pong">Pong Game</a></li>
+				</ul>
+			</li>
+			<li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <h1>Select Tic-Tac-Toe Mode</h1>
+
+    <div class="game-grid">
+        <div class="game-card">
+            <a href="/start_tic_tac_toe"><img src="{{ url_for('static', filename='images/tic_tac_toe.png') }}" alt="Tic-Tac-Toe Two Player" class="game-image"></a>
+            <p>Tic-Tac-Toe - Two Player</p>
+        </div>
+        <div class="game-card">
+            <a href="/start_tic_tac_toe_ai"><img src="{{ url_for('static', filename='images/tic_tac_toe_ai.png') }}" alt="Tic-Tac-Toe AI" class="game-image"></a>
+            <p>Tic-Tac-Toe - Player vs AI</p>
+        </div>
+    </div>
+</body>
+</html>
