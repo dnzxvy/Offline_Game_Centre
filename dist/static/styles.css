@@ -1,0 +1,192 @@
+/* === Global Styles === */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(to bottom, #2E003E, #1a0033);
+    color: #f0eaff; /* soft white-purple text */
+}
+
+/* === Animated Starry Background === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1a0033;
+    background-image: radial-gradient(#ffffff 1px, transparent 1px);
+    background-size: 3px 3px;
+    z-index: -1;
+    animation: starsMove 30s linear infinite;
+    opacity: 0.1;
+}
+
+@keyframes starsMove {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 1000px 1000px;
+    }
+}
+
+/* === Navigation Bar === */
+nav {
+    background-color: #24003a;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #b266ff;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #b266ff; /* matches the purple vibe */
+}
+
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+/* ==== DROPDOWN MENU ==== */
+nav ul li {
+    position: relative;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 6px 10px;
+}
+
+/* Show dropdown on hover over li (NOT just the anchor) */
+nav ul li:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #3b0a57;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+    min-width: 160px;
+}
+
+.dropdown-content li {
+    margin: 5px 0;
+    list-style: none;
+}
+
+.dropdown-content li a {
+    color: #f0eaff;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+}
+
+.dropdown-content li a:hover {
+    background-color: #5a148e;
+    border-radius: 4px;
+}
+
+/* === Header === */
+h1 {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 32px;
+    color: #d9b3ff;
+}
+
+/* === Game Grid === */
+.game-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin: 0 auto 40px auto;
+    padding: 0 30px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.game-card {
+    width: 300px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* === Game Image Styling === */
+.game-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid #a64dff;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #33004d;
+}
+
+.game-image:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px #bf40ff;
+}
+
+/* === Game Title / Caption === */
+.game-card p {
+    margin-top: 10px;
+    color: #e6ccff;
+    font-size: 16px;
+}
+
+.centered-message {
+    text-align: center;
+    margin-top: 100px;
+    color: #f0eaff;
+}
+
+.home-btn {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    background: #b266ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.home-btn:hover {
+    background: #a64dff;
+}
+
