@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Launching Tic-Tac-Toe...</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img">
+            <span class="logo-text">Game Centre</span>
+        </div>
+    </nav>
+
+    <div class="centered-message">
+        <h1> Tic-Tac-Toe - Player vs AI is launching...</h1>
+        <p>Your game should pop up in a moment!</p>
+
+        <a href="/start_tic_tac_toe_ai" class="reload-btn">🔁 Reload Game</a>
+        <a href="/" class="home-btn">🏠 Back to Home</a>
+    </div>
+</body>
+</html>
