@@ -57,9 +57,9 @@ class TicTacToeGUI:
                 self.master.after(500, self.computer_move)  # slight delay for realism
 
     def computer_move(self):
-        available_moves = [i for i, spot in enumerate(self.board) if spot == ' ']
+        available_moves = [i for i, spot in enumerate(self.board) if spot == ' '] # Checks to find all positions that are still empty
         if available_moves:
-            square = random.choice(available_moves)
+            square = random.choice(available_moves) # Randomly selects one of the empty squares
             self.make_move(square)
 
     def check_winner(self, square):

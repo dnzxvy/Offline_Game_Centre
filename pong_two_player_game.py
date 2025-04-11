@@ -3,7 +3,7 @@ import random
 import time
 import winsound
 
-# Draw a purple background on the canvas
+# Purple background on the canvas
 def draw_star_background(canvas):
     canvas.create_rectangle(0, 0, 700, 500, fill="#1a0033", outline="")
 
@@ -152,10 +152,10 @@ class Paddle2:
         if pos[3] >= 500:
             self.y = 0
 
-# 🪟 Initialize the main game window
+# Initialise the main game window
 tk = Tk()
 tk.title("Pong Game!!!")
-tk.geometry("+300+100")  # Place it nicely on screen
+tk.geometry("+300+100")  # Place it on screen
 tk.resizable(0, 0)
 tk.wm_attributes('-topmost', 1)  # Keeps window on top
 
@@ -163,14 +163,14 @@ tk.wm_attributes('-topmost', 1)  # Keeps window on top
 canvas = Canvas(tk, width=700, height=500, bd=0, highlightthickness=0)
 canvas.pack()
 
-draw_star_background(canvas)  # Draw starry background
-canvas.create_line(350, 0, 350, 500, fill='white')  # Mid divider
+draw_star_background(canvas)  # Draw background
+canvas.create_line(350, 0, 350, 500, fill='white')
 
 tk.update()
 
 
 paddle1 = Paddle1(canvas, 'purple')
-paddle2 = Paddle2(canvas, 'purple')
+paddle2 = Paddle2(canvas, 'cyan')
 ball = Ball(canvas, paddle2, paddle1, 'white')
 
 #  Main game loop

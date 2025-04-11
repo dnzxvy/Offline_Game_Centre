@@ -18,11 +18,10 @@ CREATE TABLE IF NOT EXISTS scores (
 
 connect.commit()
 
-##
-## FUNCTIONS TO USE ANYWHERE
+
+
 
 # Save a new score
-
 def save_score(username, game_name, score):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute('''
@@ -32,7 +31,6 @@ def save_score(username, game_name, score):
     connect.commit()
 
 # Get highest score for user in snake game
-
 def get_user_high_score(username, game_name):
     cursor.execute('''
         SELECT MAX(score) FROM scores

@@ -1,6 +1,5 @@
 from tkinter import *
 from snake_score_database import save_score, get_user_high_score
-from tkinter import messagebox
 import random
 
 # Define the Snake class to manage the snake's properties and movement
@@ -12,12 +11,13 @@ class Snake:
 
         # Initialise snake body at the top-left corner of the canvas
         for i in range(0, BODY_PARTS):
-            self.coordinates.append([0, 0])  # Snake starts at [0, 0]
+            self.coordinates.append([0, 0])  # Snake starts at coordinates[0, 0]
 
         # Create the graphical representation of the snake
         for x, y in self.coordinates:
             square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOUR, tag="snake")
             self.squares.append(square)
+
 def draw_tongue(x, y, direction):
     tongue_length = 10
     tongue_width = 2
@@ -37,7 +37,7 @@ def draw_tongue(x, y, direction):
         x1, y1 = x + SPACE_SIZE, y + SPACE_SIZE // 2
         x2, y2 = x + SPACE_SIZE + tongue_length, y + SPACE_SIZE // 2
     else:
-        return  # Safety check
+        return
 
     canvas.create_line(x1, y1, x2, y2, fill=tongue_color, width=tongue_width, tag="tongue")
 
@@ -54,7 +54,7 @@ class Food:
         # Create the visual representation of the food
         canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOUR, tag="food")
 
-# Start a new game, initializing snake and food
+# Start a new game, initialising snake and food
 def start_game():
     global snake, food
     score = 0
@@ -70,13 +70,12 @@ def start_game():
 # Restart the game after a game over
 def restart_game():
     global score
-    #draw_star_background()
     canvas.delete(ALL)
     score = 0  # Reset the score
     label.config(text="Score:{}".format(score))  # Update score display
-    game_over_label.place_forget()  # Hide "Game Over" message
+    game_over_label.place_forget()  # Hide Game Over message
     restart_button.place_forget()  # Hide restart button
-    start_game()  # Start a new game
+    start_game()
 
 
 
@@ -127,7 +126,7 @@ def next_turn(snake, food):
     # Check if the snake eats the food
     if x == food.coordinates[0] and y == food.coordinates[1]:
         global score
-        score += 1  # Increase the score
+        score += 1
         label.config(text="Score:{}".format(score))  # Update score display
         canvas.delete("food")  # Remove the current food
         food = Food()  # Generate new food
@@ -172,18 +171,18 @@ def check_collisions(snake):
 
     return False
 
-# Display the "Game Over" screen
+# Display the Game Over screen
 def game_over():
     canvas.delete(ALL)  # Clear the canvas
     save_score(username, "Snake", score)
-    game_over_label.place(relx=0.5, rely=0.4, anchor=CENTER)  # Display "Game Over" message
-    restart_button.place(relx=0.5, rely=0.6, anchor=CENTER)  # Show restart button
+    game_over_label.place(relx=0.5, rely=0.4, anchor=CENTER)
+    restart_button.place(relx=0.5, rely=0.6, anchor=CENTER)
 
-# Initialize the main Tkinter window
+# Initialise the main Tkinter window
 window = Tk()
 from tkinter import simpledialog
 
-# after window = Tk()
+
 username = simpledialog.askstring("Username", "Enter your username:")
 if not username:
     username = "Guest"
@@ -191,11 +190,11 @@ if not username:
 window.title("Snake Game")
 window.resizable(False, False)
 
-# Initialize game variables
+# Initialise game variables
 score = 0
 direction = 'down'
 
-# Create and configure the score label
+# Score label
 label = Label(window, text="Score:{}".format(score), font=('consolas', 30))
 label.pack()
 
@@ -211,12 +210,12 @@ start_button = Button(window, text="Start Game", font=('consolas', 20), command=
 start_button.place(relx=0.5, rely=0.5, anchor=CENTER)
 window.update()  # Update the window to render the start button
 
-# Create "Game Over" label and restart button
+# Create Game Over label and restart button
 game_over_label = Label(window, text="Game Over!", font=('consolas', 44), fg="red")
 restart_button = Button(window, text="Restart Game", font=('consolas', 20), command=restart_game, bd=0)
 restart_button.place_forget()  # Hide restart button initially
 
-# Center the game window on the screen
+# Put the game window on the centre of the screen
 window_width = window.winfo_width()
 window_height = window.winfo_height()
 screen_width = window.winfo_screenwidth()
@@ -232,5 +231,5 @@ window.bind('<Right>', lambda event: change_direction('right'))
 window.bind('<Up>', lambda event: change_direction('up'))
 window.bind('<Down>', lambda event: change_direction('down'))
 
-# Start the Tkinter event loop
 window.mainloop()
+

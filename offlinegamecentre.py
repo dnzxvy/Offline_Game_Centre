@@ -4,10 +4,6 @@ import sys
 app = Flask(__name__)
 
 
-@app.route('/start_snake')
-def start_snake():
-    subprocess.Popen([sys.executable, "snake_easy_mode.py"])
-    return render_template("snake_loading.html")
 
 
 @app.route('/')
