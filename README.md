@@ -209,31 +209,4 @@ Ensuring smooth transitions between menus, loading screens, and games.
 * Refactor into a more scalable architecture
 * Package games more cleanly instead of separate scripts
 
----
 
-## 📷 Screenshots
-
-*Add screenshots here (menus, gameplay, etc.)*
-
----
-
-## 📄 License
-
-MIT License
-
----
-
-## 🙌 Acknowledgements
-
-* Classic arcade games inspiration
-* Built as part of a personal software development journey
-
----
-
-## 📬 Contact
-
-Add your GitHub or LinkedIn here
-
----
-
-**Author:** Your Name
